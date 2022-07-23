@@ -19,7 +19,10 @@ except:
 
 # You may reuse elements of "wordBank" as many times as needed.
 
-def allConstructs(target,wordBank):
+def allConstructs(target,wordBank,memo):
+    if target in memo:
+        return memo[target]
+
     if target == "":
         return [[]]
     
@@ -27,19 +30,19 @@ def allConstructs(target,wordBank):
     for word in wordBank:
         if word in target and target.index(word) == 0:
             suffix = target[len(word):]
-            suffixWays = allConstructs(suffix,wordBank)
+            suffixWays = allConstructs(suffix,wordBank,memo)
             # print(suffixWays)
             targetWays = []
             for i in range(len(suffixWays)):
                 suffixWays[i].insert(0,word)
-                print(suffixWays[i])
                 targetWays.append(suffixWays[i])
-            result.append(targetWays)
+            result += targetWays
     
-    return result
+    memo[target] = result
+    return memo[target]
 
-
-print(allConstructs("abcdef",["ab","abc","cd","def","abcd","ef","c"]))
-print(allConstructs("hello",["cat","dog","mouse"]))
-print(allConstructs("purple",["purp","p","ur","le","purpl"]))
-print(allConstructs("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz",["a","aa","aaa","aaaa","aaaaa"]))
+# allConstructs("abcdef",["ab","abc","cd","def","abcd","ef","c"])
+print(allConstructs("abcdef",["ab","abc","cd","def","abcd","ef","c"],{}))
+print(allConstructs("hello",["cat","dog","mouse"],{}))
+print(allConstructs("purple",["purp","p","ur","le","purpl"],{}))
+print(allConstructs("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz",["a","aa","aaa","aaaa","aaaaa"],{}))
